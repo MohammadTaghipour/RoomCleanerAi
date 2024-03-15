@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +7,6 @@ import 'package:room_cleaner/assets.dart';
 import 'package:room_cleaner/room.dart';
 
 void main() {
-  DartVLC.initialize();
   runApp(const MyApp());
 }
 
@@ -286,8 +284,6 @@ class _InputScreenState extends State<InputScreen> {
 }
 
 class MainScreen extends StatefulWidget {
-  final player = Player(id: 69420);
-
   // initialize
   RoomLabel currentRoom;
   final RoomObject roomA;
@@ -342,7 +338,6 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   RoomWidget(widget.roomA),
                   RoomWidget(widget.roomB),
-                  RoomWidget(widget.roomB),
                 ],
               ),
               AnimatedPositioned(
@@ -376,7 +371,6 @@ class _MainScreenState extends State<MainScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              widget.player.stop();
               Navigator.pop(context);
             },
             child: const Padding(
@@ -400,7 +394,6 @@ class _MainScreenState extends State<MainScreen> {
     if (!widget.roomA.isDirty && !widget.roomB.isDirty) {
       // widget.txtLog += 'All Rooms Are Clean!\n';
       if (widget.counter >= 2) {
-        widget.player.stop();
         return;
       }
       goToNextRoom();
@@ -457,10 +450,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void initializeCleaner() {
-    widget.player.open(
-      Media.file(File(cleanerSound)),
-      autoStart: true, // default
-    );
     widget.txtLog = ('Cleaner initialized\n');
     startCleaner();
   }
